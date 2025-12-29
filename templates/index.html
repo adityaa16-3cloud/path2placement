@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Performance Prediction</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<h2>
+    <i class="fa-solid fa-graduation-cap"></i>
+    Student Performance Prediction
+</h2>
+
+<form action="/predict" method="post" class="glass-form performance-glass">
+    <p><i class="fa-solid fa-calendar-check"></i> Attendance (%)</p>
+    <input type="number" name="attendance" required>
+
+    <p><i class="fa-solid fa-clock"></i> Study Hours per Day</p>
+    <input type="number" name="study_hours" required>
+
+    <p><i class="fa-solid fa-pen"></i> Internal Marks</p>
+    <input type="number" name="internal_marks" required>
+
+    <p><i class="fa-solid fa-file-lines"></i> Assignment Score</p>
+    <input type="number" name="assignment_score" required>
+
+    <button type="submit" class="action-btn">
+        <i class="fa-solid fa-chart-line"></i> Predict
+    </button>
+</form>
+
+{% if prediction_text %}
+<div class="result-container">
+    {% if "PASS" in prediction_text %}
+        <div class="result pass">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>PASS</span>
+        </div>
+    {% else %}
+        <div class="result fail">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <span>FAIL</span>
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Open Placement -->
+<a href="/placement" class="action-btn placement-btn">
+    <i class="fa-solid fa-bullseye"></i> Open Placement Prediction
+</a>
+
+<!-- Dashboards -->
+<div class="dashboard-dropdown">
+    <button type="button" class="action-btn dashboard-yellow">
+        <i class="fa-solid fa-chart-column"></i> Admin Dashboards
+    </button>
+
+    <div class="dashboard-menu">
+        <a href="http://localhost:8501" target="_blank">
+            📊 Student Performance Dashboard
+        </a>
+        <a href="http://localhost:8502" target="_blank">
+            🎯 Placement Dashboard
+        </a>
+    </div>
+</div>
+
+
+
+<!-- ================= POPUP CHATBOT ================= -->
+
+<div id="chatbot-toggle">🤖</div>
+<div id="chatbot-hint">👋 Hello! I’m here to help</div>
+
+
+<div id="popup-chatbot" class="hidden">
+
+    <div class="popup-header">
+        <span>AI Student Assistant</span>
+        <button id="closeChat">✖</button>
+    </div>
+
+    <div class="popup-body" id="popupBody">
+        <div class="bot-bubble">
+            👋 Hi! Ask me about performance, placement chances, or improvement tips.
+        </div>
+    </div>
+
+    <div class="popup-input">
+        <input type="text" id="popupInput" placeholder="Type your question..." autocomplete="off">
+
+        <button id="micBtn" title="Voice input">
+            <i class="fa-solid fa-microphone"></i>
+        </button>
+
+        <button id="sendBtn" title="Send">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const toggle = document.getElementById("chatbot-toggle");
+    const popup = document.getElementById("popup-chatbot");
+    const closeBtn = document.getElementById("closeChat");
+    const sendBtn = document.getElementById("sendBtn");
+    const micBtn = document.getElementById("micBtn");
+    const input = document.getElementById("popupInput");
+    const body = document.getElementById("popupBody");
+
+    toggle.onclick = () => popup.classList.toggle("hidden");
+    closeBtn.onclick = () => popup.classList.add("hidden");
+
+    /* ================= SEND MESSAGE ================= */
+    sendBtn.onclick = async () => {
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        body.innerHTML += `<div class="user-bubble">${msg}</div>`;
+        body.innerHTML += `<div class="bot-bubble thinking">🤖 Thinking...</div>`;
+        body.scrollTop = body.scrollHeight;
+        input.value = "";
+
+        try {
+            const res = await fetch("/chat_api", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: msg })
+            });
+
+            const data = await res.json();
+
+            document.querySelector(".thinking")?.remove();
+
+            body.innerHTML += `<div class="bot-bubble">${data.reply}</div>`;
+            body.scrollTop = body.scrollHeight;
+
+            speakOnce(data.reply);
+
+        } catch (e) {
+            document.querySelector(".thinking")?.remove();
+            body.innerHTML += `<div class="bot-bubble">⚠️ Error contacting chatbot.</div>`;
+        }
+    };
+
+    /* ================= VOICE INPUT ================= */
+    if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-US";
+
+        micBtn.onclick = () => recognition.start();
+
+        recognition.onresult = e => {
+            input.value = e.results[0][0].transcript;
+        };
+    }
+
+});
+
+/* ================= VOICE OUTPUT (SAFE) ================= */
+function speakOnce(text) {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1;
+    u.pitch = 1;
+    u.volume = 1;
+    window.speechSynthesis.speak(u);
+}
+</script>
+<script>
+setTimeout(() => {
+    const hint = document.getElementById("chatbot-hint");
+    if (hint) hint.style.display = "none";
+}, 6000); // hides after 6 seconds
+</script>
+
+
+<style>
+/* styles unchanged — your UI is fine */
+</style>
+
+</body>
+</html>

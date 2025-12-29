@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Features | Path2Placement</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            background: radial-gradient(circle at top, #1e293b, #020617);
+            color: #e5e7eb;
+            font-family: "Segoe UI", sans-serif;
+            padding: 80px 8%;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 70px;
+        }
+
+        /* ===== FEATURE SECTION ===== */
+        .feature-section {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 100px;
+        }
+
+        .feature-section.reverse {
+            flex-direction: row-reverse;
+        }
+
+        /* ===== IMAGE ===== */
+        .feature-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .feature-image img {
+            max-width: 100%;
+            border-radius: 22px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        /* ===== TEXT ===== */
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-text i {
+            font-size: 28px;
+            color: #22c55e;
+            margin-bottom: 14px;
+        }
+
+        .feature-text h3 {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+
+        .feature-text p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #cbd5f5;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .feature-section,
+            .feature-section.reverse {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>✨ Platform Features</h1>
+
+<!-- 1. Academic Performance -->
+<section class="feature-section">
+    <div class="feature-image">
+        <img src="{{ url_for('static', filename='images/features/academic.png') }}"
+             alt="Academic Performance Analytics">
+    </div>
+
+    <div class="feature-text">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <h3>Academic Performance Prediction</h3>
+        <p>
+            Predict student academic outcomes using machine learning models trained on
+            attendance, study hours, internal assessments, and assignment performance.
+            This feature helps identify at-risk students early and supports timely
+            academic intervention.
+        </p>
+    </div>
+</section>
+
+<!-- 2. Placement Readiness -->
+<section class="feature-section reverse">
+    <div class="feature-image">
+        <img src="{{ url_for('static', filename='images/features/placement.png') }}"
+             alt="Placement Readiness Analytics">
+    </div>
+
+    <div class="feature-text">
+        <i class="fa-solid fa-bullseye"></i>
+        <h3>Placement Readiness Analysis</h3>
+        <p>
+            Analyze placement readiness by evaluating CGPA, internships, technical skills,
+            aptitude scores, and communication abilities. Provides an estimated placement
+            probability to help students prepare strategically for career opportunities.
+        </p>
+    </div>
+</section>
+
+<!-- 3. AI Insights -->
+<section class="feature-section">
+    <div class="feature-image">
+        <img src="{{ url_for('static', filename='images/features/ai-insights.png') }}"
+             alt="AI Powered Insights">
+    </div>
+
+    <div class="feature-text">
+        <i class="fa-solid fa-brain"></i>
+        <h3>AI-Powered Insights</h3>
+        <p>
+            Generate personalized, data-driven insights using artificial intelligence to
+            guide students on improving academic performance and placement readiness.
+            Focuses on actionable recommendations rather than just predictions.
+        </p>
+    </div>
+</section>
+
+<!-- 4. Dashboards -->
+<section class="feature-section reverse">
+    <div class="feature-image">
+        <img src="{{ url_for('static', filename='images/features/dashboard.png') }}"
+             alt="Interactive Dashboards">
+    </div>
+
+    <div class="feature-text">
+        <i class="fa-solid fa-chart-pie"></i>
+        <h3>Interactive Dashboards</h3>
+        <p>
+            Visual dashboards designed for students and administrators to explore
+            performance trends, placement statistics, and key metrics using modern
+            analytics and visualization techniques.
+        </p>
+    </div>
+</section>
+
+<!-- 5. AI Assistant -->
+<section class="feature-section">
+    <div class="feature-image">
+        <img src="{{ url_for('static', filename='images/features/assistant.png') }}"
+             alt="AI Student Assistant">
+    </div>
+
+    <div class="feature-text">
+        <i class="fa-solid fa-comments"></i>
+        <h3>AI Student Assistant</h3>
+        <p>
+            An AI-powered student assistant that answers questions, provides guidance,
+            and helps users understand predictions and analytics in real time through
+            conversational interaction.
+        </p>
+    </div>
+</section>
+
+<!-- 6. Security -->
+<section class="feature-section reverse">
+    <div class="feature-image">
+        <img src="{{ url_for('static', filename='images/features/security.png') }}"
+             alt="Secure Architecture">
+    </div>
+
+    <div class="feature-text">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3>Secure Architecture</h3>
+        <p>
+            Built on a secure and scalable architecture using Flask and machine learning
+            models, with privacy-first data handling practices to ensure reliability,
+            ethical usage, and data protection.
+        </p>
+    </div>
+</section>
+
+</body>
+</html>

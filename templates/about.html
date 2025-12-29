@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About | Path2Placement</title>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    font-family: "Segoe UI", sans-serif;
+    color: #e5e7eb;
+}
+
+/* ===== PAGE CONTAINER ===== */
+.about-page {
+    padding: 90px 8%;
+}
+
+/* ===== TITLE ===== */
+.page-title {
+    text-align: center;
+    font-size: 38px;
+    margin-bottom: 70px;
+}
+
+/* ===== SECTIONS ===== */
+.about-section {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 100px;
+}
+
+.about-section.reverse {
+    flex-direction: row-reverse;
+}
+
+/* ===== TEXT ===== */
+.about-text {
+    flex: 1;
+}
+
+.about-text h2 {
+    font-size: 28px;
+    margin-bottom: 14px;
+}
+
+.about-text p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #cbd5f5;
+}
+
+/* ===== IMAGE ===== */
+.about-image {
+    flex: 1;
+    text-align: center;
+}
+
+.about-image img {
+    max-width: 100%;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+/* ===== CORE VALUES ===== */
+.values-section {
+    text-align: center;
+}
+
+.values-section h2 {
+    font-size: 28px;
+    margin-bottom: 50px;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+}
+
+.value-card {
+    background: rgba(15,23,42,0.9);
+    padding: 28px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(56,189,248,0.25);
+}
+
+.value-card i {
+    font-size: 32px;
+    color: #38bdf8;
+    margin-bottom: 12px;
+}
+
+.value-card h3 {
+    margin-bottom: 8px;
+}
+
+.value-card p {
+    font-size: 14px;
+    color: #cbd5f5;
+}
+
+/* ===== RESPONSIVE ===== */
+/* Desktop layout */
+.about-section {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+/* Reverse layout ONLY on desktop */
+.about-section.reverse {
+    flex-direction: row;
+}
+
+/* Mobile layout */
+@media (max-width: 900px) {
+    .about-section,
+    .about-section.reverse {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="about-page">
+
+    <!-- PAGE TITLE -->
+    <h1 class="page-title">
+        🎯 About Path2Placement
+    </h1>
+
+    <!-- WHO WE ARE -->
+    <section class="about-section">
+        <div class="about-text">
+            <h2>Who We Are</h2>
+            <p>
+                Path2Placement is an AI-powered student analytics platform designed to help
+                students understand their academic performance and placement readiness.
+                Using machine learning models and data-driven insights, we bridge the gap
+                between academic effort and career outcomes.
+            </p>
+        </div>
+
+        <div class="about-image">
+            <img src="{{ url_for('static', filename='images/about-ai.png') }}"
+                 alt="AI Analytics Illustration">
+        </div>
+    </section>
+
+    <!-- OUR MISSION -->
+   <section class="about-section reverse">
+    <div class="about-image">
+        <img src="{{ url_for('static', filename='images/about-mission.png') }}"
+             alt="Student Growth Mission">
+    </div>
+
+    <div class="about-text">
+        <h2>Our Mission</h2>
+        <p>
+            To empower students with actionable insights that improve academic success,
+            enhance placement readiness, and enable informed career decisions through
+            modern AI and analytics technologies.
+        </p>
+    </div>
+</section>
+
+
+    <!-- CORE VALUES -->
+    <section class="values-section">
+        <h2>Core Values</h2>
+
+        <div class="values-grid">
+
+            <div class="value-card">
+                <i class="fa-solid fa-brain"></i>
+                <h3>AI-Driven Decisions</h3>
+                <p>Smart predictions powered by reliable data.</p>
+            </div>
+
+            <div class="value-card">
+                <i class="fa-solid fa-user-graduate"></i>
+                <h3>Student-Centric</h3>
+                <p>Designed specifically to support student growth.</p>
+            </div>
+
+            <div class="value-card">
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Actionable Insights</h3>
+                <p>Not just results, but clear improvement paths.</p>
+            </div>
+
+            <div class="value-card">
+                <i class="fa-solid fa-lock"></i>
+                <h3>Secure & Ethical</h3>
+                <p>Privacy-first and responsible data handling.</p>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>

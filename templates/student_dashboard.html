@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Dashboard | Path2Placement</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            background: radial-gradient(circle at top, #1e293b, #020617);
+            color: #e5e7eb;
+            font-family: "Segoe UI", Arial, sans-serif;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard {
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        .card {
+            background: rgba(2, 6, 23, 0.85);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .card h2 {
+            margin-bottom: 18px;
+            font-size: 18px;
+        }
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pass { color: #22c55e; }
+        .fail { color: #ef4444; }
+        .warn { color: #facc15; }
+
+        .insight-box {
+            background: rgba(255,255,255,0.05);
+            padding: 14px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .insight-box ul {
+            margin-top: 8px;
+            padding-left: 18px;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 40px auto 0;
+            padding: 14px 26px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #facc15, #fde047);
+            color: #020617;
+            text-decoration: none;
+            font-weight: bold;
+            width: fit-content;
+            box-shadow: 0 10px 25px rgba(250,204,21,0.45);
+        }
+        /* ===== KPI STATUS BADGES ===== */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 16px;
+}
+
+.status-pass {
+    background: rgba(34,197,94,0.15);
+    color: #22c55e;
+    box-shadow: 0 0 20px rgba(34,197,94,0.3);
+}
+
+.status-placed {
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
+    box-shadow: 0 0 20px rgba(16,185,129,0.3);
+}
+
+/* ===== CARD HOVER ===== */
+.dashboard-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+}
+
+/* ===== AI INSIGHT CARD ===== */
+.ai-insight-box {
+    background: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(2,6,23,0.95));
+    border-left: 4px solid #22c55e;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: inset 0 0 20px rgba(34,197,94,0.15);
+}
+
+.ai-badge {
+    display: inline-block;
+    font-size: 12px;
+    color: #22c55e;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+/* ===== CTA AREA ===== */
+.dashboard-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+.dashboard-greeting {
+    text-align: center;
+    margin: 20px 0 50px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.dashboard-greeting span {
+    color: #38bdf8;
+}
+
+.dashboard-greeting p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #94a3b8;
+    font-weight: normal;
+}
+/* ===== PROGRESS SECTION ===== */
+.progress-section {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+}
+
+.progress-card {
+    width: 260px;
+    background: rgba(2,6,23,0.85);
+    padding: 18px 20px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.progress-card span {
+    font-size: 14px;
+    color: #cbd5f5;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #020617;
+    border-radius: 999px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+/* Academic */
+.progress-fill.academic {
+    width: 85%;
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+}
+
+/* Placement */
+.progress-fill.placement {
+    width: 90%;
+    background: linear-gradient(135deg, #22c55e, #4ade80);
+}
+
+.progress-card small {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .progress-section {
+        gap: 20px;
+    }
+}
+
+
+    </style>
+</head>
+
+<body>
+
+<h1>
+    <i class="fa-solid fa-user-graduate"></i> Student Dashboard
+</h1>
+
+<!-- GREETING -->
+<div class="dashboard-greeting">
+    👋 Welcome back, <span>Student</span>!
+    <p>Here’s a quick overview of your academic and placement progress.</p>
+</div>
+
+<!-- MINI PROGRESS BARS (ADD HERE) -->
+<div class="progress-section">
+
+    <div class="progress-card">
+        <span>📘 Academic Confidence</span>
+        <div class="progress-bar">
+            <div class="progress-fill academic"></div>
+        </div>
+        <small>
+            {% if performance_prediction == 1 %}
+                85% Strong
+            {% else %}
+                Needs Improvement
+            {% endif %}
+        </small>
+    </div>
+
+    <div class="progress-card">
+        <span>💼 Placement Readiness</span>
+        <div class="progress-bar">
+            <div class="progress-fill placement"></div>
+        </div>
+        <small>
+            {% if placement_prediction == 1 %}
+                90% Ready
+            {% else %}
+                Not Ready Yet
+            {% endif %}
+        </small>
+    </div>
+
+</div>
+
+<!-- DASHBOARD CARDS -->
+<div class="dashboard">
+
+    <!-- Academic Status -->
+    <div class="card">
+        <h2><i class="fa-solid fa-book"></i> Academic Performance</h2>
+
+        {% if performance_prediction == 1 %}
+            <div class="status pass">
+                <i class="fa-solid fa-circle-check"></i> PASS
+            </div>
+        {% elif performance_prediction == 0 %}
+            <div class="status fail">
+                <i class="fa-solid fa-circle-xmark"></i> FAIL
+            </div>
+        {% else %}
+            <div class="status warn">
+                <i class="fa-solid fa-triangle-exclamation"></i> Not Predicted
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Placement Status -->
+    <div class="card">
+        <h2><i class="fa-solid fa-briefcase"></i> Placement Status</h2>
+
+        {% if placement_prediction == 1 %}
+            <div class="status pass">
+                <i class="fa-solid fa-circle-check"></i> PLACED
+            </div>
+        {% elif placement_prediction == 0 %}
+            <div class="status fail">
+                <i class="fa-solid fa-circle-xmark"></i> NOT PLACED
+            </div>
+        {% else %}
+            <div class="status warn">
+                <i class="fa-solid fa-triangle-exclamation"></i> Not Predicted
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- AI INSIGHTS -->
+    <div class="card">
+        <h2><i class="fa-solid fa-brain"></i> AI Insights & Improvement Tips</h2>
+
+        {% if performance_prediction == 1 and placement_prediction == 1 %}
+            <div class="insight-box" style="border-left:4px solid #22c55e;">
+                🎉 <strong>Congratulations!</strong><br>
+                You are academically strong and placement-ready.<br>
+                Keep up the great work — you are on track to get placed easily 🚀
+            </div>
+
+        {% elif performance_prediction == 1 and placement_prediction == 0 %}
+            <div class="insight-box" style="border-left:4px solid #facc15;">
+                ⚠️ <strong>Almost there!</strong>
+                <ul>
+                    <li>Add at least 1 internship</li>
+                    <li>Improve communication skills</li>
+                    <li>Practice aptitude regularly</li>
+                </ul>
+            </div>
+
+        {% elif performance_prediction == 0 %}
+            <div class="insight-box" style="border-left:4px solid #ef4444;">
+                ❗ <strong>Academic Improvement Needed</strong>
+                <ul>
+                    <li>Increase attendance to 75%+</li>
+                    <li>Study 1 extra hour daily</li>
+                    <li>Improve internal & assignment scores</li>
+                </ul>
+            </div>
+
+        {% else %}
+            <div class="insight-box" style="border-left:4px solid #38bdf8;">
+                ℹ️ Make performance and placement predictions to receive personalized insights.
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- BACK BUTTON -->
+<a href="/performance" class="back-btn">
+    ⬅ Back to Performance Page
+</a>
+
+</body>
+</html>
+

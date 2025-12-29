@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Placement Prediction | Path2Placement</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="top-nav">
+    <a href="/performance" class="nav-item performance">
+        <i class="fa-solid fa-house"></i> Performance
+    </a>
+
+    <a href="/placement" class="nav-item placement active">
+        <i class="fa-solid fa-bullseye"></i> Placement
+    </a>
+
+    <!-- ✅ NEW STUDENT DASHBOARD BUTTON -->
+    <a href="/student_dashboard"
+   class="nav-item student-dashboard active">
+   <i class="fa-solid fa-user-graduate"></i> Student Dashboard
+</a>
+
+
+    <!-- EXISTING DASHBOARDS DROPDOWN -->
+    <div class="nav-item dashboard dashboard-dropdown">
+        <span><i class="fa-solid fa-chart-bar"></i>Admin Dashboards</span>
+        <div class="dashboard-menu">
+            <a href="http://localhost:8501" target="_blank">📊 Student Performance Dashboard</a>
+            <a href="http://localhost:8502" target="_blank">🎯 Placement Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<h2 class="page-title">
+    <i class="fa-solid fa-bullseye"></i> Placement Prediction System
+</h2>
+
+<form action="/placement_predict" method="post"
+      class="placement-form glass-form placement-glass">
+
+    <label>CGPA</label>
+    <input type="number" step="0.01" name="cgpa" value="{{ cgpa }}" required>
+
+    <label>Internships</label>
+    <input type="number" name="internships" value="{{ internships }}" required>
+
+    <label>Projects</label>
+    <input type="number" name="projects" value="{{ projects }}" required>
+
+    <label>Aptitude Score</label>
+    <input type="number" name="aptitude" value="{{ aptitude }}" required>
+
+    <label>Technical Skills (1–5)</label>
+    <input type="number" min="1" max="5" name="skills" value="{{ skills }}" required>
+
+    <label>Communication Skills (1–5)</label>
+    <input type="number" min="1" max="5"
+           name="communication" value="{{ communication }}" required>
+
+    <label>Backlogs</label>
+    <input type="number" name="backlogs" value="{{ backlogs }}" required>
+
+    <button type="submit" class="predict-placement-btn">
+        <i class="fa-solid fa-magic"></i> Predict Placement
+    </button>
+</form>
+
+{% if placement_result %}
+<h3 class="result-text">
+
+    {% if "NOT PLACED" in placement_result %}
+        <span class="result-icon fail">✖</span>
+    {% elif "PLACED" in placement_result %}
+        <span class="result-icon success">✔</span>
+    {% endif %}
+
+    {{ placement_result }}
+
+</h3>
+{% endif %}
+
+
+
+<!-- ================= POPUP CHATBOT ================= -->
+
+<div id="chatbot-toggle">🤖</div>
+<div id="chatbot-hint">👋 Hello! I’m here to help</div>
+
+
+<div id="popup-chatbot" class="hidden">
+
+    <div class="popup-header">
+        <span>AI Student Assistant</span>
+        <button id="closeChat">✖</button>
+    </div>
+
+    <div class="popup-body" id="popupBody">
+        <div class="bot-bubble">
+            👋 Hi! Ask me about placement chances or improvement tips.
+        </div>
+    </div>
+
+    <div class="popup-input">
+        <input type="text"
+               id="popupUserInput"
+               placeholder="Type your question..."
+               autocomplete="off">
+
+        <button id="popupMicBtn" title="Voice Input">
+            <i class="fa-solid fa-microphone"></i>
+        </button>
+
+        <button id="sendBtn" title="Send">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const toggle = document.getElementById("chatbot-toggle");
+    const popup = document.getElementById("popup-chatbot");
+    const closeBtn = document.getElementById("closeChat");
+    const sendBtn = document.getElementById("sendBtn");
+    const micBtn = document.getElementById("popupMicBtn");
+    const input = document.getElementById("popupUserInput");
+    const body = document.getElementById("popupBody");
+
+    toggle.onclick = () => popup.classList.toggle("hidden");
+    closeBtn.onclick = () => popup.classList.add("hidden");
+
+    /* ================= SEND MESSAGE (API ONLY) ================= */
+    sendBtn.onclick = async () => {
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        body.innerHTML += `<div class="user-bubble">${msg}</div>`;
+        body.innerHTML += `<div class="bot-bubble thinking">🤖 Thinking...</div>`;
+        body.scrollTop = body.scrollHeight;
+        input.value = "";
+
+        try {
+            const res = await fetch("/chat_api", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: msg })
+            });
+
+            const data = await res.json();
+
+            document.querySelector(".thinking")?.remove();
+
+            body.innerHTML += `<div class="bot-bubble">${data.reply}</div>`;
+            body.scrollTop = body.scrollHeight;
+
+            speakOnce(data.reply);
+
+        } catch {
+            document.querySelector(".thinking")?.remove();
+            body.innerHTML += `<div class="bot-bubble">⚠️ Chatbot error.</div>`;
+        }
+    };
+
+    /* ================= VOICE INPUT ================= */
+    if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-US";
+
+        micBtn.onclick = () => recognition.start();
+
+        recognition.onresult = e => {
+            input.value = e.results[0][0].transcript;
+        };
+    }
+});
+
+/* ================= SAFE VOICE OUTPUT ================= */
+function speakOnce(text) {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1;
+    u.pitch = 1;
+    u.volume = 1;
+    window.speechSynthesis.speak(u);
+}
+</script>
+<script>
+setTimeout(() => {
+    const hint = document.getElementById("chatbot-hint");
+    if (hint) hint.style.display = "none";
+}, 6000); // hides after 6 seconds
+</script>
+
+
+<style>
+/* UI unchanged – only logic fixed */
+</style>
+
+</body>
+</html>

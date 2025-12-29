@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome | Path2Placement</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ===== MAIN NAVBAR ===== */
+.main-navbar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 80px);
+    max-width: 1200px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    z-index: 1000;
+}
+
+/* ===== LOGO CONTAINER ===== */
+.nav-logo {
+    display: flex;
+    align-items: center;
+    padding-right: 14px;
+}
+
+/* ===== LOGO IMAGE ===== */
+.nav-logo img {
+    height: 85px;      /* ⬅️ increase size */
+    width: auto;
+    display: block;
+}
+
+
+/* ===== CAPSULE BOX ===== */
+.nav-box {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+
+    padding: 14px 34px;
+    background: rgba(2,6,23,0.85);
+    backdrop-filter: blur(12px);
+
+    border: 2px solid rgba(229,231,235,0.9);
+    border-radius: 999px;
+
+    box-shadow: 0 10px 35px rgba(0,0,0,0.6);
+}
+
+.nav-box a {
+    color: #cbd5f5;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s ease;
+}
+
+.nav-box a:hover {
+    color: #38bdf8;
+}
+
+/* ===== CTA BUTTON ===== */
+.nav-cta {
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #22c55e, #4ade80);
+    color: #020617;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* ===== PAGE OFFSET ===== */
+.welcome-page {
+    padding-top: 120px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .main-navbar {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .nav-box {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 18px;
+        border-radius: 28px;
+        padding: 18px 22px;
+    }
+}
+@media (max-width: 900px) {
+    .nav-logo img {
+        height: 46px;
+    }
+}
+.nav-logo {
+    background: rgba(255,255,255,0.08);
+    padding: 6px 10px;
+    border-radius: 12px;
+}
+
+</style>
+
+
+</head>
+
+<body class="welcome-page">
+
+<!-- ===== NAV BAR ===== -->
+<nav class="main-navbar">
+
+    <!-- LEFT LOGO -->
+    <a href="/" class="nav-logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}"
+             alt="Path2Placement Logo">
+    </a>
+
+    <!-- CENTER CAPSULE BOX -->
+    <div class="nav-box">
+        <a href="/">Home</a>
+        <a href="/performance">Performance</a>
+        <a href="/placement">Placement</a>
+        <a href="/about">About</a>
+        <a href="/features">Features</a>
+        <a href="/contact">Contact</a>
+    </div>
+
+<a href="/get-started" class="nav-cta">
+    Get Started <i class="fa-solid fa-user-graduate"></i>
+</a>
+
+
+</nav>
+
+
+
+    <!-- Floating Icons -->
+    <i class="fa-solid fa-chart-line floating-icon icon1"></i>
+    <i class="fa-solid fa-database floating-icon icon2"></i>
+    <i class="fa-solid fa-brain floating-icon icon3"></i>
+    <i class="fa-solid fa-chart-pie floating-icon icon4"></i>
+
+    <div class="welcome-container">
+        <p class="welcome-tech">
+    Built with Machine Learning • Flask • Streamlit
+</p>
+
+        <h1 class="welcome-title">
+            🎯 Path2Placement
+        </h1>
+
+        <p class="welcome-subtitle typing-text">
+            AI-Powered Student Performance & Placement Prediction System
+        </p>
+
+        <p class="welcome-description">
+            A smart analytics platform that helps students evaluate academic performance,
+            predict outcomes, and assess placement readiness using Machine Learning.
+        </p>
+
+        <!-- Stats -->
+        <div class="welcome-stats">
+            <div class="stat">
+                <span class="count" data-target="95">0</span>%
+                <p>Prediction Accuracy</p>
+            </div>
+
+            <div class="stat">
+                <span class="count" data-target="250">0</span>+
+                <p>Students Analysed</p>
+            </div>
+
+            <div class="stat">
+                <span class="count" data-target="1200">0</span>+
+                <p>Predictions Made</p>
+            </div>
+        </div>
+
+        <!-- MAIN ACTION BUTTONS -->
+        <div class="welcome-actions">
+    <a href="/performance" class="action-btn primary-btn">
+        <i class="fa-solid fa-graduation-cap"></i>
+        Start Academic Performance Prediction
+    </a>
+
+    <a href="/placement" class="action-btn secondary-btn">
+        <i class="fa-solid fa-bullseye"></i>
+        Check Placement Readiness
+    </a>
+</div>
+    </div>
+
+    <script>
+        const counters = document.querySelectorAll(".count");
+        counters.forEach(counter => {
+            const update = () => {
+                const target = +counter.getAttribute("data-target");
+                const current = +counter.innerText;
+                const increment = target / 80;
+
+                if (current < target) {
+                    counter.innerText = Math.ceil(current + increment);
+                    setTimeout(update, 30);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            update();
+        });
+    </script>
+
+</body>
+</html>

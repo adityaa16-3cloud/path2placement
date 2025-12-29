@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Student Chatbot | Path2Placement</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="chatbot-page">
+
+<h2 class="chatbot-title">
+    🤖 AI Student Assistant
+</h2>
+
+<div class="chatbot-container">
+
+    <!-- CHAT WINDOW -->
+    <div class="chatbot-window" id="chatWindow">
+
+        <!-- BOT WELCOME -->
+        <div class="chat-message bot">
+            <div class="avatar bot-avatar">🤖</div>
+            <div class="bubble bot-bubble">
+                Hello 👋<br>
+                I can help you with:
+                <ul>
+                    <li>📊 Performance analysis</li>
+                    <li>🎯 Placement prediction</li>
+                    <li>🚀 Improvement tips</li>
+                </ul>
+                <b>You can type or talk 🎙️</b>
+            </div>
+        </div>
+
+        {% if chat_response %}
+        <!-- THINKING -->
+        <div class="chat-message bot thinking" id="thinking">
+            <div class="avatar bot-avatar">🤖</div>
+            <div class="bubble bot-bubble">
+                <span class="dots">Thinking</span>
+            </div>
+        </div>
+
+        <!-- BOT REPLY -->
+        <div class="chat-message bot hidden" id="botReply">
+            <div class="avatar bot-avatar">🤖</div>
+            <div class="bubble bot-bubble typing" id="botText">
+                {{ chat_response }}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- INPUT BAR -->
+    <form class="chatbot-input" action="/chat" method="post">
+        <input type="text" id="userInput" name="message" placeholder="Ask me anything..." required>
+
+        <!-- MIC BUTTON -->
+        <button type="button" id="micBtn">
+            <i class="fa-solid fa-microphone"></i>
+        </button>
+
+        <!-- SEND -->
+        <button type="submit">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </form>
+
+</div>
+
+<!-- NAV BUTTONS -->
+<div class="chatbot-nav">
+
+    <a href="/performance" class="action-btn chatbot-btn">
+        ⬅ Back to Prediction
+    </a>
+
+    <!-- DASHBOARD DROPDOWN -->
+    <div class="dashboard-dropdown">
+        <button type="button" class="action-btn dashboard-btn">
+            📊 Dashboards
+        </button>
+
+        <div class="dashboard-menu">
+            <a href="http://localhost:8501" target="_blank">
+                Student Performance Dashboard
+            </a>
+            <a href="http://localhost:8502" target="_blank">
+                Placement Dashboard
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* ================= THINKING → REPLY ================= */
+const thinking = document.getElementById("thinking");
+const reply = document.getElementById("botReply");
+
+if (thinking && reply) {
+    setTimeout(() => {
+        thinking.style.display = "none";
+        reply.classList.remove("hidden");
+    }, 1200);
+}
+
+/* ================= VOICE INPUT ================= */
+const micBtn = document.getElementById("micBtn");
+const input = document.getElementById("userInput");
+
+if ('webkitSpeechRecognition' in window) {
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+
+    micBtn.onclick = () => {
+        micBtn.classList.add("listening");
+        recognition.start();
+    };
+
+    recognition.onresult = (event) => {
+        input.value = event.results[0][0].transcript;
+        micBtn.classList.remove("listening");
+    };
+
+    recognition.onerror = () => {
+        micBtn.classList.remove("listening");
+    };
+} else {
+    alert("Voice recognition not supported in this browser.");
+}
+
+/* ================= VOICE OUTPUT ================= */
+window.onload = () => {
+    const text = document.getElementById("botText");
+    if (text && 'speechSynthesis' in window) {
+        const speech = new SpeechSynthesisUtterance(text.innerText);
+        speech.rate = 1;
+        speech.pitch = 1;
+        speech.volume = 1;
+        speechSynthesis.speak(speech);
+    }
+};
+</script>
+</body>
+</html>
